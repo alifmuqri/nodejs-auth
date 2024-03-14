@@ -1,9 +1,9 @@
 const user = require("../models/user");
-const JwtStratergy = require("passport-jwt").Strategy;
-const ExtractJwt = require("passport-jwt").ExtractJwt;
+const JwtStratergy = require("passport-jwt").Strategy,
+  extractJwt = require("passport-jwt").ExtractJwt;
 const config = require("../config/config");
 
-var opts = {
+const opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: config.jwtSecret,
 };
