@@ -1,7 +1,7 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
+var mongoose = require("mongoose");
+var bcrypt = require("bcrypt");
 
-const UserSchema = new mongoose.Schema({
+var UserSchema = new mongoose.Schema({
   email: {
     type: String,
     unique: true,
@@ -12,15 +12,12 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    trim: true,
   },
 });
 
-//hash the password using bcrypt
 UserSchema.pre("save", function (next) {
-  const user = this.UserSchema;
+  var user = this;
 
-  //check if password is modified, if not, set to next action in queue, skip encryption
   if (!user.isModified("password")) return next();
 
   bcrypt.genSalt(10, function (err, salt) {
@@ -35,7 +32,7 @@ UserSchema.pre("save", function (next) {
   });
 });
 
-UserSchema.methods.comparePassword = function (candidatePassword) {
+UserSchema.methods.comparePassword = function (candidatePassword, cb) {
   bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
     if (err) return cb(err);
     cb(null, isMatch);
